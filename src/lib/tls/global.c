@@ -374,7 +374,7 @@ int tls_global_init(void)
 		WARN("Failed to set OpenSSL memory allocation functions.  OpenSSL mallocs will not be tracked");
 	}
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 	SSL_load_error_strings();	/* Readable error messages (examples show call before library_init) */
 	SSL_library_init();		/* Initialize library */
 	OpenSSL_add_all_algorithms();	/* Required for SHA2 in OpenSSL < 0.9.8o and 1.0.0.a */
