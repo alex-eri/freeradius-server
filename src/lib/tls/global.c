@@ -100,7 +100,7 @@ static libssl_defect_t libssl_defects[] =
 
 static bool tls_done_init = false;
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 /*
  *	If we're linking against OpenSSL, then it is the
  *	duty of the application, if it is multithreaded,
@@ -132,7 +132,7 @@ static unsigned long _thread_id(void)
  *	Use preprocessor magic to get the right function and argument
  *	to use.  This avoids ifdef's through the rest of the code.
  */
-#if OPENSSL_VERSION_NUMBER < 0x10000000L
+#if OPENSSL_VERSION_NUMBER < 0x10000000L 
 #define ssl_id_function  _thread_id
 #define set_id_callback CRYPTO_set_id_callback
 
@@ -322,7 +322,7 @@ int tls_global_version_check(char const *acknowledged)
  * @param len to alloc.
  * @return realloc.
  */
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 static void *openssl_talloc(size_t len, UNUSED char const *file, UNUSED int line)
 #else
 static void *openssl_talloc(size_t len)
@@ -337,7 +337,7 @@ static void *openssl_talloc(size_t len)
  * @param len to extend to.
  * @return realloced memory.
  */
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 static void *openssl_realloc(void *old, size_t len, UNUSED char const *file, UNUSED int line)
 #else
 static void *openssl_realloc(void *old, size_t len)
@@ -350,7 +350,7 @@ static void *openssl_realloc(void *old, size_t len)
  *
  * @param to_free memory to free.
  */
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 static void openssl_free(void *to_free, UNUSED char const *file, UNUSED int line)
 #else
 static void openssl_free(void *to_free)
@@ -417,7 +417,7 @@ int tls_global_init(void)
 	return 0;
 }
 
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 /** Free any memory alloced by libssl
  *
  * OpenSSL >= 1.1.0 uses an atexit handler to automatically free memory
