@@ -1000,9 +1000,7 @@ eap {
 		#  The inner tunneled request can be sent through a virtual
 		#  server constructed specifically for this purpose.
 		#
-		#  If this entry is commented out, the inner tunneled request
-		#  will be sent through the virtual server that processed the
-		#  outer requests.
+		#  Configuration item "virtual_server" must have a value
 		#
 		virtual_server = "inner-tunnel"
 
