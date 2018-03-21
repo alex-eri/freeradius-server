@@ -849,7 +849,7 @@ int tls_session_pairs_from_x509_cert(vp_cursor_t *cursor, TALLOC_CTX *ctx,
 
 	int		attr_index, loc;
 
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 	STACK_OF(X509_EXTENSION) const *ext_list = NULL;
 #else
 	STACK_OF(X509_EXTENSION) *ext_list = NULL;
@@ -966,7 +966,7 @@ do { \
 				switch (name->type) {
 #ifdef GEN_EMAIL
 				case GEN_EMAIL: {
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 					char const *rfc822Name = (char const *)ASN1_STRING_get0_data(name->d.rfc822Name);
 #else
 					char *rfc822Name = (char *)ASN1_STRING_data(name->d.rfc822Name);
@@ -978,7 +978,7 @@ do { \
 #endif	/* GEN_EMAIL */
 #ifdef GEN_DNS
 				case GEN_DNS: {
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 					char const *dNSName = (char const *)ASN1_STRING_get0_data(name->d.dNSName);
 #else
 					char *dNSName = (char *)ASN1_STRING_data(name->d.dNSName);
@@ -1320,7 +1320,7 @@ int tls_session_handshake(REQUEST *request, tls_session_t *session)
 		q[0] = '\0';
 
 		RDEBUG2("Cipher suite: %s", cipher_desc_clean);
-#if OPENSSL_VERSION_NUMBER >= 0x10001000L
+#if OPENSSL_VERSION_NUMBER >= 0x10001000L && !defined(LIBRESSL_VERSION_NUMBER)
 		/*
 		 *	Cache the SSL_SESSION pointer.
 		 *

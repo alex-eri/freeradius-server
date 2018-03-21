@@ -337,7 +337,7 @@ int tls_cache_write(REQUEST *request, tls_session_t *tls_session)
  *	- NULL on error.
  */
 static SSL_SESSION *tls_cache_read(SSL *ssl,
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 				   unsigned char const *key,
 #else
 				   unsigned char *key,
@@ -508,7 +508,7 @@ void tls_cache_deny(tls_session_t *session)
  *	- 1 if enabling session resumption was disabled for this session.
  */
 int tls_cache_disable_cb(SSL *ssl,
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if OPENSSL_VERSION_NUMBER < 0x10100000L || defined(LIBRESSL_VERSION_NUMBER)
 			 UNUSED
 #endif
 			 int is_forward_secure)
@@ -521,7 +521,7 @@ int tls_cache_disable_cb(SSL *ssl,
 	session = talloc_get_type_abort(SSL_get_ex_data(ssl, FR_TLS_EX_INDEX_TLS_SESSION), tls_session_t);
 	request = talloc_get_type_abort(SSL_get_ex_data(ssl, FR_TLS_EX_INDEX_REQUEST), REQUEST);
 
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 	{
 		fr_tls_conf_t *conf;
 
@@ -584,7 +584,7 @@ void tls_cache_init(SSL_CTX *ctx, bool enabled, uint32_t lifetime)
 	SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_SERVER | SSL_SESS_CACHE_NO_INTERNAL);
 	SSL_CTX_set_timeout(ctx, lifetime);
 
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 	SSL_CTX_set_not_resumable_session_callback(ctx, tls_cache_disable_cb);
 #endif
 }
