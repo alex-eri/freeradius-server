@@ -71,7 +71,7 @@ static CONF_PARSER cache_config[] = {
 	{ FR_CONF_OFFSET("lifetime", FR_TYPE_UINT32, fr_tls_conf_t, session_cache_lifetime), .dflt = "86400" },
 	{ FR_CONF_OFFSET("verify", FR_TYPE_BOOL, fr_tls_conf_t, session_cache_verify), .dflt = "no" },
 
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 	{ FR_CONF_OFFSET("require_extended_master_secret", FR_TYPE_BOOL, fr_tls_conf_t, session_cache_require_extms), .dflt = "yes" },
 	{ FR_CONF_OFFSET("require_perfect_forward_secrecy", FR_TYPE_BOOL, fr_tls_conf_t, session_cache_require_pfs), .dflt = "no" },
 #endif
