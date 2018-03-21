@@ -153,7 +153,7 @@ static int tls_ctx_load_cert_chain(SSL_CTX *ctx, fr_tls_chain_conf_t const *chai
 		return -1;
 	}
 
-#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+#if OPENSSL_VERSION_NUMBER >= 0x10002000L && !defined(LIBRESSL_VERSION_NUMBER)
 	{
 		size_t		extra_cnt, i;
 		/*
@@ -214,7 +214,7 @@ static int tls_ctx_load_cert_chain(SSL_CTX *ctx, fr_tls_chain_conf_t const *chai
 		return -1;
 	}
 
-#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+#if OPENSSL_VERSION_NUMBER >= 0x10002000L && !defined(LIBRESSL_VERSION_NUMBER)
 	{
 		int mode = SSL_BUILD_CHAIN_FLAG_CHECK;
 
@@ -404,7 +404,7 @@ SSL_CTX *tls_ctx_alloc(fr_tls_conf_t const *conf, bool client)
 		if (mode) SSL_CTX_set_mode(ctx, mode);
 	}
 
-#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+#if OPENSSL_VERSION_NUMBER >= 0x10002000L && !defined(LIBRESSL_VERSION_NUMBER)
 	/*
 	 *	If we're using a sufficiently new version of
 	 *	OpenSSL, initialise different stores for creating
@@ -460,7 +460,7 @@ SSL_CTX *tls_ctx_alloc(fr_tls_conf_t const *conf, bool client)
 			}
 		}
 
-#if OPENSSL_VERSION_NUMBER >= 0x10002000L
+#if OPENSSL_VERSION_NUMBER >= 0x10002000L && !defined(LIBRESSL_VERSION_NUMBER)
 		/*
 		 *	Print out our certificate chains.
 		 *
@@ -536,7 +536,7 @@ SSL_CTX *tls_ctx_alloc(fr_tls_conf_t const *conf, bool client)
 post_ca:
 #endif
 
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 	/*
 	 *	SSL_CTX_set_(min|max)_proto_version was included in OpenSSL 1.1.0
 	 *

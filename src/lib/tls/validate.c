@@ -105,7 +105,7 @@ int tls_validate_cert_cb(int ok, X509_STORE_CTX *x509_ctx)
 		STACK_OF(X509)	*our_chain = X509_STORE_CTX_get_chain(x509_ctx);
 		int		i;
 
-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
+#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined(LIBRESSL_VERSION_NUMBER)
 		RDEBUG3("Certificate chain - %i cert(s) untrusted", X509_STORE_CTX_get_num_untrusted(x509_ctx));
 #else
 		RDEBUG3("Certificate chain");
