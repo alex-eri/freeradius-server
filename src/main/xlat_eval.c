@@ -240,14 +240,14 @@ static xlat_action_t xlat_eval_one_letter(TALLOC_CTX *ctx, fr_cursor_t *out, REQ
 	}
 		break;
 
-	case 'C': /* Current epoch time microseconds */
+	case 'C': /* Current epoch time microsecond component */
 	{
 		struct timeval now;
 
 		gettimeofday(&now, NULL);
 
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT64, NULL, false));
-		value->datum.uint64 = (uint64_t)now.tv_usec;
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT32, NULL, false));
+		value->datum.uint32 = (uint64_t)now.tv_usec;
 	}
 		break;
 
@@ -262,7 +262,7 @@ static xlat_action_t xlat_eval_one_letter(TALLOC_CTX *ctx, fr_cursor_t *out, REQ
 			return XLAT_ACTION_FAIL;
 		}
 
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_INT8, NULL, false));
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT8, NULL, false));
 		value->datum.uint8 = ts.tm_mday;
 		break;
 
@@ -278,21 +278,21 @@ static xlat_action_t xlat_eval_one_letter(TALLOC_CTX *ctx, fr_cursor_t *out, REQ
 	case 'e': /* Request second */
 		if (!localtime_r(&when, &ts)) goto error;
 
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_INT8, NULL, false));
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT8, NULL, false));
 		value->datum.uint8 = ts.tm_sec;
 		break;
 
 	case 'G': /* Request minute */
 		if (!localtime_r(&when, &ts)) goto error;
 
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_INT8, NULL, false));
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT8, NULL, false));
 		value->datum.uint8 = ts.tm_min;
 		break;
 
 	case 'H': /* Request hour */
 		if (!localtime_r(&when, &ts)) goto error;
 
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_INT8, NULL, false));
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT8, NULL, false));
 		value->datum.uint8 = ts.tm_hour;
 		break;
 
@@ -304,13 +304,13 @@ static xlat_action_t xlat_eval_one_letter(TALLOC_CTX *ctx, fr_cursor_t *out, REQ
 	case 'm': /* Request month */
 		if (!localtime_r(&when, &ts)) goto error;
 
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_INT8, NULL, false));
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT8, NULL, false));
 		value->datum.uint8 = ts.tm_mon + 1;
 		break;
 
-	case 'M': /* Request microsecond */
-		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT64, NULL, false));
-		value->datum.uint64 = request->packet->timestamp.tv_usec;
+	case 'M': /* Request time microsecond component */
+		MEM(value = fr_value_box_alloc(ctx, FR_TYPE_UINT32, NULL, false));
+		value->datum.uint32 = request->packet->timestamp.tv_usec;
 		break;
 
 	case 'S': /* Request timestamp in SQL format */
